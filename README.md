@@ -2,7 +2,8 @@
 
 macOS 菜单栏应用，实时显示 Claude.ai 用量（5小时会话 / 7日额度 / 今日 Tokens）。
 
-![登录界面](image/Snipaste_2026-05-12_15-42-34.png)
+<img width="260" height="280" alt="image" src="https://github.com/user-attachments/assets/febb7647-e46e-4377-9401-85a679720898" />
+
 
 ## 功能
 

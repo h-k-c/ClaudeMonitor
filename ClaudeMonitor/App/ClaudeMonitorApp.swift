@@ -9,6 +9,10 @@ struct ClaudeMonitorApp: App {
     @State private var apiRefreshTimer: Timer?
     @State private var tokenRefreshTimer: Timer?
 
+    init() {
+        // Timers start at app launch — independent of popover lifecycle
+    }
+
     var body: some Scene {
         MenuBarExtra {
             DashboardView(viewModel: viewModel)
@@ -16,12 +20,8 @@ struct ClaudeMonitorApp: App {
                     viewModel.startMonitoring()
                     viewModel.loadBuddyTokens()
                     viewModel.refreshAPI()
-                    startAPIAutoRefresh()
-                    startTokenAutoRefresh()
-                }
-                .onDisappear {
-                    apiRefreshTimer?.invalidate()
-                    tokenRefreshTimer?.invalidate()
+                    startAPIAutoRefreshIfNeeded()
+                    startTokenAutoRefreshIfNeeded()
                 }
         } label: {
             Image(nsImage: RingImage.render(
@@ -32,15 +32,15 @@ struct ClaudeMonitorApp: App {
         .menuBarExtraStyle(.window)
     }
 
-    private func startAPIAutoRefresh() {
-        apiRefreshTimer?.invalidate()
+    private func startAPIAutoRefreshIfNeeded() {
+        guard apiRefreshTimer == nil else { return }
         apiRefreshTimer = Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { _ in
             viewModel.refreshAPI()
         }
     }
 
-    private func startTokenAutoRefresh() {
-        tokenRefreshTimer?.invalidate()
+    private func startTokenAutoRefreshIfNeeded() {
+        guard tokenRefreshTimer == nil else { return }
         tokenRefreshTimer = Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { _ in
             viewModel.loadBuddyTokens()
         }

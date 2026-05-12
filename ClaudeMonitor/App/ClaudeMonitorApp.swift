@@ -60,17 +60,19 @@ enum RingImage {
         let center = CGPoint(x: size / 2, y: size / 2)
         let radius = (size - lineWidth) / 2
 
+        // Use template mode for states without meaningful color data
+        // so the system auto-adapts the icon to any menu bar background.
+        let useTemplate = isStale || percentage <= 0
+
         let color: NSColor
-        if isStale {
-            color = .systemGray
+        if useTemplate {
+            color = .labelColor
         } else if percentage >= 90 {
             color = .systemRed
         } else if percentage >= 60 {
             color = .systemYellow
-        } else if percentage > 0 {
-            color = .systemGreen
         } else {
-            color = .secondaryLabelColor
+            color = .systemGreen
         }
 
         // Background ring
@@ -103,7 +105,7 @@ enum RingImage {
         }
 
         image.unlockFocus()
-        image.isTemplate = false
+        image.isTemplate = useTemplate
         return image
     }
 }

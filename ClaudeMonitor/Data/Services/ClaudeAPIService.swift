@@ -255,9 +255,9 @@ private enum APIResponseParser {
         let claudeDesignResetDate = isoDate(claudeDesign?["resets_at"])
 
         let sessionUsed = Int((sessionPct * 100).rounded())
-        let sessionLimit = sessionPct > 0 ? 100 : 0
+        let sessionLimit = fiveHour != nil ? 100 : 0
         let msgUsed = Int((weeklyPct * 100).rounded())
-        let msgLimit = weeklyPct > 0 ? 100 : 0
+        let msgLimit = sevenDay != nil ? 100 : 0
 
         var weeklyResetText = ""
         if let wd = weeklyResetDate {

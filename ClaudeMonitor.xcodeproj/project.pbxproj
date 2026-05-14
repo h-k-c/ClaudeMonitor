@@ -28,6 +28,9 @@
 		F464AE9EB18706C3F1319DD0 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D76337A2E87D52CE8E1939 /* KeychainHelper.swift */; };
 		F486D4FDDA250B7F67EB656E /* UsageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565DA3BFDF659D993563954 /* UsageData.swift */; };
 		FFA9863C6C81E92C27E74E43 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069186DADCAFD6588D0603D1 /* StatsViewModel.swift */; };
+		A1B2C3D4E5F60001AABBCC01 /* CodexUsageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002AABBCC02 /* CodexUsageData.swift */; };
+		A1B2C3D4E5F60003AABBCC03 /* CodexCredentialLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60004AABBCC04 /* CodexCredentialLoader.swift */; };
+		A1B2C3D4E5F60005AABBCC05 /* CodexAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60006AABBCC06 /* CodexAPIService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +57,9 @@
 		DF2D5CAA327D12B2EAEDDD35 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		E2E8C5D572320C1859698AE1 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		E4BCC987140637C4E12D1C73 /* FileWatcherProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWatcherProtocol.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002AABBCC02 /* CodexUsageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexUsageData.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60004AABBCC04 /* CodexCredentialLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexCredentialLoader.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60006AABBCC06 /* CodexAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAPIService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +169,8 @@
 			isa = PBXGroup;
 			children = (
 				688C57DCEB862ED3BC4643A1 /* ClaudeAPIService.swift */,
+				A1B2C3D4E5F60004AABBCC04 /* CodexCredentialLoader.swift */,
+				A1B2C3D4E5F60006AABBCC06 /* CodexAPIService.swift */,
 				358AB7D5CB1E65FD1EE20D85 /* NotificationService.swift */,
 			);
 			path = Services;
@@ -191,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				69A10096DFDA2B6D4A169833 /* ClaudeStats.swift */,
+				A1B2C3D4E5F60002AABBCC02 /* CodexUsageData.swift */,
 				889C8B072A276DAAEC9812AF /* DailyActivity.swift */,
 				DED985E49B3DB095311F0591 /* DailyModelTokens.swift */,
 				90BAB227FA5A8A0C28508254 /* ModelUsage.swift */,
@@ -307,6 +316,9 @@
 				6FDD82257F0F4869817ADE3C /* StatsRepositoryProtocol.swift in Sources */,
 				FFA9863C6C81E92C27E74E43 /* StatsViewModel.swift in Sources */,
 				F486D4FDDA250B7F67EB656E /* UsageData.swift in Sources */,
+				A1B2C3D4E5F60001AABBCC01 /* CodexUsageData.swift in Sources */,
+				A1B2C3D4E5F60003AABBCC03 /* CodexCredentialLoader.swift in Sources */,
+				A1B2C3D4E5F60005AABBCC05 /* CodexAPIService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,7 +395,7 @@
 				LSUIElement = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.claude-monitor.app";
-				PRODUCT_NAME = "Claude Monitor";
+				PRODUCT_NAME = "AI Monitor";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
 			};
@@ -466,7 +478,7 @@
 				LSUIElement = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.claude-monitor.app";
-				PRODUCT_NAME = "Claude Monitor";
+				PRODUCT_NAME = "AI Monitor";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
 			};

@@ -57,7 +57,7 @@ private struct AboutTab: View {
                 .font(.system(size: 48))
                 .foregroundStyle(.secondary)
 
-            Text("Claude Monitor")
+            Text("AI Monitor")
                 .font(.title2)
                 .fontWeight(.semibold)
 
@@ -65,7 +65,7 @@ private struct AboutTab: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 
-            Text("Claude.ai API + 本地统计文件")
+            Text("Claude + Codex 用量监控")
                 .font(.caption)
                 .foregroundStyle(.tertiary)
         }

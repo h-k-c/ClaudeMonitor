@@ -2,40 +2,76 @@ import SwiftUI
 
 @main
 struct ClaudeMonitorApp: App {
-    @State private var viewModel = StatsViewModel(repository: StatsRepository(
-        dataSource: LocalStatsFileSource(),
-        fileWatcher: FileWatcher()
-    ))
+    @State private var viewModel = StatsViewModel()
     @State private var apiRefreshTimer: Timer?
     @State private var tokenRefreshTimer: Timer?
-
-    init() {
-        // Timers start at app launch — independent of popover lifecycle
-    }
+    @State private var codexRefreshTimer: Timer?
 
     var body: some Scene {
         MenuBarExtra {
             DashboardView(viewModel: viewModel)
                 .onAppear {
-                    viewModel.startMonitoring()
                     viewModel.loadBuddyTokens()
-                    viewModel.refreshAPI()
-                    startAPIAutoRefreshIfNeeded()
+                    if viewModel.claudeEnabled {
+                        viewModel.refreshAPI()
+                        startAPIAutoRefreshIfNeeded()
+                    }
+                    if viewModel.codexEnabled {
+                        viewModel.refreshCodex()
+                        startCodexAutoRefreshIfNeeded()
+                    }
                     startTokenAutoRefreshIfNeeded()
                 }
         } label: {
             Image(nsImage: RingImage.render(
-                percentage: viewModel.primaryModelPercentage,
-                isStale: viewModel.isStale && viewModel.hasAPIData
+                percentage: menuBarPercentage,
+                isStale: menuBarIsStale
             ))
         }
         .menuBarExtraStyle(.window)
     }
 
+    /// Menu bar shows the highest usage between enabled sources
+    private var menuBarPercentage: Int {
+        var values: [Int] = []
+        if viewModel.claudeEnabled {
+            values.append(viewModel.primaryModelPercentage)
+        }
+        if viewModel.codexEnabled {
+            values.append(Int(viewModel.codexPrimaryPercentage * 100))
+            values.append(Int(viewModel.codexSecondaryPercentage * 100))
+        }
+        return values.max() ?? 0
+    }
+
+    private var menuBarIsStale: Bool {
+        var staleSources = 0
+        var totalSources = 0
+        if viewModel.claudeEnabled && viewModel.hasAPIData {
+            totalSources += 1
+            if viewModel.isStale { staleSources += 1 }
+        }
+        if viewModel.codexEnabled && viewModel.hasCodexData {
+            totalSources += 1
+            if viewModel.codexIsStale { staleSources += 1 }
+        }
+        // Only stale if ALL enabled sources with data are stale
+        return totalSources > 0 && staleSources == totalSources
+    }
+
+    private func startCodexAutoRefreshIfNeeded() {
+        guard codexRefreshTimer == nil else { return }
+        codexRefreshTimer = Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { [weak viewModel] _ in
+            guard viewModel?.codexEnabled == true else { return }
+            viewModel?.refreshCodex()
+        }
+    }
+
     private func startAPIAutoRefreshIfNeeded() {
         guard apiRefreshTimer == nil else { return }
-        apiRefreshTimer = Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { _ in
-            viewModel.refreshAPI()
+        apiRefreshTimer = Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { [weak viewModel] _ in
+            guard viewModel?.claudeEnabled == true else { return }
+            viewModel?.refreshAPI()
         }
     }
 

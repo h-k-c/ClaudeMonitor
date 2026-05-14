@@ -104,8 +104,7 @@ final class CodexCredentialLoader {
     private static func parseJWT(_ jwt: String) -> JWTInfo {
         let parts = jwt.split(separator: ".")
         guard parts.count >= 2,
-              let payloadData = Data(base64Encoded: String(parts[1]),
-                                     options: [.ignoreUnknownCharacters]) else {
+              let payloadData = base64URLDecode(String(parts[1])) else {
             return JWTInfo(email: nil, accountId: nil)
         }
         guard let claims = try? JSONSerialization.jsonObject(with: payloadData) as? [String: Any] else {
@@ -119,6 +118,17 @@ final class CodexCredentialLoader {
         let accountId = auth?["chatgpt_account_id"] as? String
 
         return JWTInfo(email: email, accountId: accountId)
+    }
+
+    private static func base64URLDecode(_ value: String) -> Data? {
+        var base64 = value
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+        let paddingLength = (4 - base64.count % 4) % 4
+        if paddingLength > 0 {
+            base64.append(String(repeating: "=", count: paddingLength))
+        }
+        return Data(base64Encoded: base64, options: [.ignoreUnknownCharacters])
     }
 
     private static func defaultAuthPath() -> String {

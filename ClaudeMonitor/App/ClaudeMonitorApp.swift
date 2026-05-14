@@ -11,6 +11,7 @@ struct ClaudeMonitorApp: App {
         MenuBarExtra {
             DashboardView(viewModel: viewModel)
                 .onAppear {
+                    NotificationService.shared.requestPermission()
                     viewModel.loadBuddyTokens()
                     if viewModel.claudeEnabled {
                         viewModel.refreshAPI()
@@ -21,6 +22,20 @@ struct ClaudeMonitorApp: App {
                         startCodexAutoRefreshIfNeeded()
                     }
                     startTokenAutoRefreshIfNeeded()
+                }
+                .onChange(of: viewModel.claudeEnabled) { _, enabled in
+                    if enabled {
+                        startAPIAutoRefreshIfNeeded()
+                    } else {
+                        stopAPIAutoRefresh()
+                    }
+                }
+                .onChange(of: viewModel.codexEnabled) { _, enabled in
+                    if enabled {
+                        startCodexAutoRefreshIfNeeded()
+                    } else {
+                        stopCodexAutoRefresh()
+                    }
                 }
         } label: {
             Image(nsImage: RingImage.render(
@@ -67,12 +82,22 @@ struct ClaudeMonitorApp: App {
         }
     }
 
+    private func stopCodexAutoRefresh() {
+        codexRefreshTimer?.invalidate()
+        codexRefreshTimer = nil
+    }
+
     private func startAPIAutoRefreshIfNeeded() {
         guard apiRefreshTimer == nil else { return }
         apiRefreshTimer = Timer.scheduledTimer(withTimeInterval: 600, repeats: true) { [weak viewModel] _ in
             guard viewModel?.claudeEnabled == true else { return }
             viewModel?.refreshAPI()
         }
+    }
+
+    private func stopAPIAutoRefresh() {
+        apiRefreshTimer?.invalidate()
+        apiRefreshTimer = nil
     }
 
     private func startTokenAutoRefreshIfNeeded() {

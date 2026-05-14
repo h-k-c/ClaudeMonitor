@@ -7,12 +7,15 @@ final class NotificationService {
     static let shared = NotificationService()
     private init() {}
 
+    private var hasRequestedPermission = false
     private var notifiedThresholds = Set<Int>()
     private var lastKnownResetDate: Date?
     private var notifiedRoutineRunsLow = false
     private var notifiedRoutineRunsExhausted = false
 
     func requestPermission() {
+        guard !hasRequestedPermission else { return }
+        hasRequestedPermission = true
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
     }
 

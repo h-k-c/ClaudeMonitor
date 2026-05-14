@@ -25,7 +25,7 @@ xcuserdata/
 .swiftpm/
 
 # Claude Code
-.claude/settings.local.json
+.claude/
 
 # Misc
 *.orig

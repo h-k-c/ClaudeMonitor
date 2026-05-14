@@ -38,10 +38,8 @@ struct ClaudeMonitorApp: App {
                     }
                 }
         } label: {
-            Image(nsImage: RingImage.render(
-                percentage: menuBarPercentage,
-                isStale: menuBarIsStale
-            ))
+            Image(systemName: menuBarSymbolName)
+                .foregroundStyle(menuBarSymbolColor)
         }
         .menuBarExtraStyle(.window)
     }
@@ -57,6 +55,22 @@ struct ClaudeMonitorApp: App {
             values.append(Int(viewModel.codexSecondaryPercentage * 100))
         }
         return values.max() ?? 0
+    }
+
+    private var menuBarSymbolName: String {
+        let p = menuBarPercentage
+        if p <= 0 { return "gauge.with.dots.needle.0percent" }
+        if p < 33 { return "gauge.with.dots.needle.33percent" }
+        if p < 67 { return "gauge.with.dots.needle.50percent" }
+        if p < 90 { return "gauge.with.dots.needle.67percent" }
+        return "gauge.with.dots.needle.100percent"
+    }
+
+    private var menuBarSymbolColor: Color {
+        if menuBarIsStale || menuBarPercentage <= 0 { return .primary }
+        if menuBarPercentage >= 90 { return .red }
+        if menuBarPercentage >= 60 { return .yellow }
+        return .green
     }
 
     private var menuBarIsStale: Bool {
@@ -136,11 +150,12 @@ enum RingImage {
             color = .systemGreen
         }
 
-        // Background ring
+        // Background ring — always fully visible so the icon is recognizable
+        // even when no source is enabled yet.
         let bgPath = NSBezierPath()
         bgPath.appendArc(withCenter: center, radius: radius, startAngle: 0, endAngle: 360)
         bgPath.lineWidth = lineWidth
-        color.withAlphaComponent(percentage > 0 ? 0.25 : 0.5).setStroke()
+        color.withAlphaComponent(percentage > 0 ? 0.3 : 1.0).setStroke()
         bgPath.stroke()
 
         // Progress arc
@@ -154,14 +169,14 @@ enum RingImage {
             color.setStroke()
             arcPath.stroke()
         } else {
-            let dotRadius: CGFloat = 2.5
+            let dotRadius: CGFloat = 2.0
             let dotPath = NSBezierPath(ovalIn: NSRect(
                 x: center.x - dotRadius,
                 y: center.y - dotRadius,
                 width: dotRadius * 2,
                 height: dotRadius * 2
             ))
-            color.withAlphaComponent(0.6).setFill()
+            color.setFill()
             dotPath.fill()
         }
 

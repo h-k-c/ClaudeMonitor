@@ -1,8 +1,8 @@
 # AI Monitor
 
 macOS 菜单栏应用，实时监控 Claude 和 Codex 用量。
+<img width="280" height="316" alt="image" src="https://github.com/user-attachments/assets/d6cf07c4-e0e8-46b3-8c42-68cf63c01c65" />
 
-<img width="280" alt="AI Monitor" src="https://github.com/user-attachments/assets/febb7647-e46e-4377-9401-85a679720898" />
 
 ## 功能
 
